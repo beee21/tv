@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>湖南卫视</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.min.js"></script>
+    <style>
+    body {
+        margin: 0;
+    }
+
+    </style>
+</head>
+<body>
+<center>
+    <video height="600" id="video" controls></video>
+</center>
+<script>
+if (Hls.isSupported()) {
+    var video = document.getElementById('video');
+    var hls = new Hls();
+    hls.loadSource('https://pull-hls-l1.ixigua.com/live/d7ccc077d0d9e7f86ae95fe1288f0b9a/playlist.m3u8');
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        video.play();
+    });
+}
+else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = 'https://pull-hls-l1.ixigua.com/live/d7ccc077d0d9e7f86ae95fe1288f0b9a/playlist.m3u8';
+    video.addEventListener('canplay', function() {
+        video.play();
+    });
+}
+</script>
+</body>
+</html>
