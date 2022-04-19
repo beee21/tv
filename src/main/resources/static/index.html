@@ -1,39 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>湖南卫视</title>
     <meta charset="utf-8">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.min.js"></script>
-    <style>
-    body {
-        margin: 0;
-    }
+    <title>IPTV</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
 
-    </style>
 </head>
 <body>
-<center>
-    <video height="600" id="video" controls></video>
-</center>
-<script>
-if (Hls.isSupported()) {
-    var video = document.getElementById('video');
-    var hls = new Hls();
-    hls.loadSource('https://pull-hls-l1.ixigua.com/live/d7ccc077d0d9e7f86ae95fe1288f0b9a/playlist.m3u8');
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, function() {
-        video.play();
-    });
-}
-else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = 'https://pull-hls-l1.ixigua.com/live/d7ccc077d0d9e7f86ae95fe1288f0b9a/playlist.m3u8';
-    video.addEventListener('canplay', function() {
-        video.play();
-    });
-}
-</script>
+<div class="container mt-3">
+    <div >
+        <a href="play.html" class="btn btn-primary">返回</a>
+        <a href="index.html" class="btn btn-primary float-end">首页</a>
+    </div>
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">第一项</a>
+        <a href="#" class="list-group-item list-group-item-action">第二项</a>
+        <a href="#" class="list-group-item list-group-item-action">第三项</a>
+    </div>
+</div>
+
 </body>
 </html>
