@@ -27,9 +27,7 @@
         dataType: "json",
         success: function(data) {
           //data = jQuery.parseJSON();  //dataType指明了返回数据为json类型，故不需要再反序列化
-          console.log(data);
             for (var i in data) {
-               console.log(i + ':' + data[i].name);
                 var name=data[i].name;
                 var url=data[i].url;
                 $(".list-group").append('<a href=play?attr='+encodeURIComponent(url)+' class="list-group-item list-group-item-action">'+name+'</a>');
