@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -79,7 +80,8 @@ public class RequestUtil {
         String str = null, key = null;
 
         String attr1 = playURL.selectFirst("option").attr("value");
-        String js = "D:\\dev\\project\\music\\src\\main\\resources\\playera.js";
+        ClassPathResource resource=new ClassPathResource("playera.js");
+        String js = resource.getPath();
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("javascript");
         try {
