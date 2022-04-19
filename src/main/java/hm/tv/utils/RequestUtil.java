@@ -14,6 +14,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -81,11 +83,17 @@ public class RequestUtil {
 
         String attr1 = playURL.selectFirst("option").attr("value");
         ClassPathResource resource=new ClassPathResource("playera.js");
-        String js = resource.getPath();
+        InputStream inputStream = null;
+        try {
+            inputStream = resource.getInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        // String js = resource.getInputStream()
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("javascript");
         try {
-            FileReader fileReader = new FileReader(js);
+            InputStreamReader fileReader = new InputStreamReader(inputStream);
             engine.eval(fileReader);
             if (engine instanceof Invocable) {
                 Invocable in = (Invocable) engine;
