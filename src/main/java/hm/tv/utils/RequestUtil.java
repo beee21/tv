@@ -1,18 +1,18 @@
 package hm.tv.utils;
 
-import hm.tv.beans.Menu;
+import hm.tv.beans.Item;
 import hm.tv.beans.PlayItem;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class RequestUtil {
-    static List<Menu> menus = new ArrayList<>();
     final static String domain = "http://iptv807.com/";
 
     public static List<PlayItem> home(String tid) {
@@ -55,7 +54,7 @@ public class RequestUtil {
     }
 
 
-    public static String getM3u8Url(String attr) {
+   /* public static String getM3u8Url(String attr) {
         //播放链接
         String getPlayUrl = getPlayUrl(domain + attr);
         //播放实际链接
@@ -72,11 +71,35 @@ public class RequestUtil {
 
        return null;
 
-    }
+    }*/
 
-    public static String getPlayUrl(String attr) {
+    public static Item getPlayUrl(String attr) {
         String url=domain + attr;
         Document document = document(url);
+        Item item=new Item();
+        Elements uls = document.select("ul");
+        Element ul = uls.get(uls.size() - 1);
+        if(Objects.nonNull(ul)){
+            Elements lis = ul.select("li");
+            List<String> list=new ArrayList<>();
+            lis.stream().forEach(li -> {
+                if(li.hasText()&& li.childrenSize()>0){
+                    String text = li.text();
+                    if(Objects.nonNull(text) && text.contains(":")){
+                        text = text.trim();
+                        if(text.endsWith("回看")||text.endsWith("直播中")){
+                            text=text.replace("回看","").replace("直播中","");
+                        }
+                        System.out.println(text);
+                        list.add(text);
+                    }
+                }
+
+
+            });
+            item.setProgram(list);
+        }
+
         Element playURL = document.getElementById("playURL");
         Elements scripts = document.select("script");
         String str = null, key = null;
@@ -131,8 +154,9 @@ public class RequestUtil {
                 String replace = bdecodeb.toString().replace("<script>", "").replace("</script>", "");
                 engine.eval(replace);
                 Object startPlayer = in.invokeFunction("startPlayer", attr1);
-                String m3u8Url = startPlayer.toString().replace("player", "play");
-                return m3u8Url;
+                String playUrl = startPlayer.toString().replace("player", "play");
+                item.setUrl(playUrl);
+                return item;
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,0 +1,8 @@
+server:
+  port: 80
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: yFaKdBO4FL6Kc2z6DX6Z
+    url: jdbc:mysql://containers-us-west-41.railway.app:6847/railway?useUnicode=true&characterEncoding=utf-8
+    username: root
