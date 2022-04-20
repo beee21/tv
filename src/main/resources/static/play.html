@@ -38,9 +38,7 @@
     <video id="video" controls>
     </video>
     <div class="list-group" style="margin-top:10px;"></div>
-
-</div>
-<script>
+    <script>
         var attr=decodeURIComponent(getUrl('attr'));
         $.ajax({
             url: "/play",
@@ -51,7 +49,10 @@
               //data = jQuery.parseJSON();  //dataType指明了返回数据为json类型，故不需要再反序列化
                 var program=data.program;
                 var url=data.url;
-
+                for (var i in program) {
+                   var name=program[i];
+                    $(".list-group").append('<p class="list-group-item ">'+name+'</p>');
+                }
                 var video = document.getElementById('video');
                 video.src = url;
                 // 兼容微信(微信可以自动播放)
@@ -59,10 +60,7 @@
                      video.play()
                 }, false);
 
-                for (var i in program) {
-                   var name=program[i];
-                    $(".list-group").append('<p class="list-group-item ">'+name+'</p>');
-                }
+
 
             }
         });
@@ -80,11 +78,8 @@
                }
                return(false);
         }
-
-
-
-
-
 </script>
+</div>
+
 </body>
 </html>
