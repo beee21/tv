@@ -19,28 +19,31 @@
     }
 
 
+
+
     </style>
 </head>
 <body>
 <div class="container">
-    <video id="video" controls></video>
+    <video id="video" muted  controls  preload="auto" autoplay="autoplay"  data-setup="{'autoplay':true}"
+         >
+    </video>
     <script>
-        if (Hls.isSupported()) {
-            var video = document.getElementById('video');
-            var hls = new Hls();
-            hls.loadSource('redirect/http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8');
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play();
-            });
+        function getUrl()
+        {
+               var query = window.location.search.substring(1);
+               var vars = query.split("&");
+               for (var i=0;i<vars.length;i++) {
+                       var pair = vars[i].split("=");
+                       if(pair[0] == 'url'){
+                            return pair[1];
+                       }
+               }
+               return(false);
         }
-        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = 'http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8';
-            video.addEventListener('canplay', function() {
-                video.play();
-            });
-        }
-
+        var url=decodeURIComponent(getUrl());
+        var video = document.getElementById('video');
+        video.src = url;
     </script>
 </div>
 </body>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class IndexController {
         String playUrl = RequestUtil.getPlayUrl(attr);
         if(Objects.nonNull(playUrl)){
             try {
-                response.sendRedirect(playUrl);
+                response.sendRedirect("play.html?url="+ URLEncoder.encode(playUrl,"utf-8"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
