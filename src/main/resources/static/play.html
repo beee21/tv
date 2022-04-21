@@ -18,18 +18,22 @@
         width: 100%;
         margin-top:10px;
     }
+
     </style>
 </head>
 <body>
 <div class="container  mt-3">
-    <div>
+    <div style="display: flex;justify-content:space-between;">
         <button type="button" onclick="javascript:history.back();" class="btn btn-primary">返回</button>
-        <a href="index.html" class="btn btn-primary float-end">首页</a>
+        <p id="name" style="font-size:18px;"></p>
+        <a href="index.html" class="btn btn-primary">首页</a>
     </div>
-    <video id="video"  preload="auto" playsinline controls>
+    <video id="video" preload="auto" playsinline controls>
     </video>
-    <div class="list-group" style="margin-top:10px;"></div>
+    <div class="list-group" style="margin-top:10px; font-size:18px;"></div>
     <script>
+        var name=decodeURIComponent(getUrl('name'));
+        $("#name").text(name);
         var attr=decodeURIComponent(getUrl('attr'));
         $.ajax({
             url: "/play",
@@ -93,6 +97,7 @@
             }
             return flag;
        }
+
     </script>
 </div>
 

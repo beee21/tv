@@ -11,11 +11,12 @@
 </head>
 <body>
 <div class="container mt-3">
-    <div >
+    <div style="display: flex;justify-content:space-between;">
         <button type="button" onclick="javascript:history.back();" class="btn btn-primary">返回</button>
-        <a href="index.html" class="btn btn-primary float-end">首页</a>
+        <p id="name" style="font-size:18px; "></p>
+        <a href="index.html" class="btn btn-primary">首页</a>
     </div>
-    <div class="list-group" style="margin-top:10px;">
+    <div class="list-group" style="margin-top:10px; font-size:18px;">
     </div>
 </div>
 <script>
@@ -26,11 +27,11 @@
         type: "GET",
         dataType: "json",
         success: function(data) {
-          //data = jQuery.parseJSON();  //dataType指明了返回数据为json类型，故不需要再反序列化
+          $("#name").text("共"+data.length+"个信号源");
             for (var i in data) {
                 var name=data[i].name;
                 var url=data[i].url;
-                $(".list-group").append('<a href=play.html?attr='+encodeURIComponent(url)+' class="list-group-item list-group-item-action">'+name+'</a>');
+                $(".list-group").append('<a href=play.html?name='+name+'&attr='+encodeURIComponent(url)+' class="list-group-item list-group-item-action">'+name+'</a>');
             }
 
         }
