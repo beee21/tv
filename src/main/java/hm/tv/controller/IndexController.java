@@ -13,21 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class IndexController {
-
-/*
-    @GetMapping("redirect")
-    public void redirect(@RequestParam String url, HttpServletResponse response) throws IOException {
-        System.out.println(url);
-        response.sendRedirect(url);
-    }
-*/
 
     @GetMapping("item")
     public List<PlayItem> item(@RequestParam String tid) {
@@ -46,16 +35,5 @@ public class IndexController {
         System.out.println(agent);
         System.out.println(attr);
         return RequestUtil.getPlayUrl(attr);
-        /*if (Objects.nonNull(playUrl)) {
-            try {
-                if (agent.toLowerCase().contains("windows"))
-                    response.sendRedirect(playUrl);
-                else
-                    response.sendRedirect("play.html?url=" + URLEncoder.encode(playUrl, "utf-8"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }*/
-
     }
 }
