@@ -27,6 +27,7 @@
 
 
 
+
     </style>
 </head>
 <body>
@@ -35,7 +36,7 @@
         <button type="button" onclick="javascript:history.back();" class="btn btn-primary">返回</button>
         <a href="index.html" class="btn btn-primary float-end">首页</a>
     </div>
-    <video id="video" controls>
+    <video id="video"  preload="auto" playsinline controls>
     </video>
     <div class="list-group" style="margin-top:10px;"></div>
     <script>
@@ -50,8 +51,20 @@
                 var program=data.program;
                 var url=data.url;
                 for (var i in program) {
-                   var name=program[i];
-                    $(".list-group").append('<p class="list-group-item ">'+name+'</p>');
+                   var name=program[i].name;
+                   var status=program[i].url;
+                   var css='';
+                   var text='';
+                   if(status=='1') //直播中
+                   {
+                        css='text-danger';
+                        text='直播中';
+                   }else if(status=='2') //结束
+                   {
+                        css='text-success';
+                        text='结束';
+                   }
+                    $(".list-group").append('<div class="list-group-item d-flex gap-2 w-100 justify-content-between"> <p class='+css+'>'+name+'</p> <small class="opacity-50 text-nowrap">'+text+'</small> </div>');
                 }
                 var video = document.getElementById('video');
                 video.src = url;
@@ -78,7 +91,8 @@
                }
                return(false);
         }
-</script>
+
+    </script>
 </div>
 
 </body>

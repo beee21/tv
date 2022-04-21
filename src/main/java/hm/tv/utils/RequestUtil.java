@@ -81,17 +81,25 @@ public class RequestUtil {
         Element ul = uls.get(uls.size() - 1);
         if(Objects.nonNull(ul)){
             Elements lis = ul.select("li");
-            List<String> list=new ArrayList<>();
+            List<PlayItem> list=new ArrayList<>();
             lis.stream().forEach(li -> {
                 if(li.hasText()&& li.childrenSize()>0){
                     String text = li.text();
                     if(Objects.nonNull(text) && text.contains(":")){
+                        PlayItem playItem=new PlayItem();
                         text = text.trim();
-                        if(text.endsWith("回看")||text.endsWith("直播中")){
-                            text=text.replace("回看","").replace("直播中","");
+                        if(text.endsWith("回看")){
+                            text= text.substring(0,text.length()-2);
+                            playItem.setUrl("2");
+                          // text=text.replace("回看","(已结束)");
+                        }else if(text.endsWith("直播中")){
+                            //text=text.replace("直播中","(直播中)");
+                            text= text.substring(0,text.length()-3);
+                            playItem.setUrl("1");
                         }
                         System.out.println(text);
-                        list.add(text);
+                        playItem.setName(text);
+                        list.add(playItem);
                     }
                 }
 
@@ -112,7 +120,6 @@ public class RequestUtil {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        // String js = resource.getInputStream()
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("javascript");
         try {

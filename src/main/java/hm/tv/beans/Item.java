@@ -8,5 +8,5 @@ import java.util.List;
 @Accessors(chain = true)
 public class Item {
     private String url;
-    private List<String> program;
+    private List<PlayItem> program;
 }
