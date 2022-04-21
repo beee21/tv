@@ -50,6 +50,8 @@
               //data = jQuery.parseJSON();  //dataType指明了返回数据为json类型，故不需要再反序列化
                 var program=data.program;
                 var url=data.url;
+                var video = document.getElementById('video');
+                video.src = url;
                 for (var i in program) {
                    var name=program[i].name;
                    var status=program[i].url;
@@ -66,8 +68,7 @@
                    }
                     $(".list-group").append('<div class="list-group-item d-flex gap-2 w-100 justify-content-between"> <p class='+css+'>'+name+'</p> <small class="opacity-50 text-nowrap">'+text+'</small> </div>');
                 }
-                var video = document.getElementById('video');
-                video.src = url;
+
                 // 兼容微信(微信可以自动播放)
                   document.addEventListener("WeixinJSBridgeReady", function () {
                      video.play()
