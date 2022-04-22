@@ -1,11 +1,13 @@
 package hm.tv.controller;
 
-import hm.tv.beans.Item;
-import hm.tv.beans.PlayItem;
-import hm.tv.beans.User;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import hm.tv.beans.*;
 import hm.tv.repository.UserRepository;
 import hm.tv.utils.IPUtil;
 import hm.tv.utils.RequestUtil;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,5 +39,38 @@ public class IndexController {
         System.out.println(agent);
         System.out.println(attr);
         return RequestUtil.getPlayUrl(attr);
+    }
+
+    @GetMapping("sport")
+    public List<Sport> sport(@RequestParam(required = false,defaultValue = "") String game) {
+        List<Sport> sports = new ArrayList<>();
+        try {
+            String text = Jsoup.connect("https://70zhibo.com/api/web/indexMatchList?game="+game).ignoreContentType(true).get().text();
+            JSONArray array = JSON.parseArray(text);
+            for (int i = 0; i < array.size(); i++) {
+                Sport sport = new Sport();
+                JSONObject jsonObject = array.getJSONObject(i);
+                String dateStr = jsonObject.getString("dateStr");
+                sport.setDateStr(dateStr);
+                List<Match> list = new ArrayList<>();
+                JSONArray matches = jsonObject.getJSONArray("matches");
+                for (int x = 0; x < matches.size(); x++) {
+                    JSONObject object = matches.getJSONObject(x);
+                    Match match = JSONObject.toJavaObject(object, Match.class);
+                    JSONArray lives = object.getJSONArray("lives");
+                    if (lives.size() > 0) {
+                        String link = lives.getJSONObject(0).getString("link");
+                        match.setLink(link);
+                    }
+                    list.add(match);
+                }
+                sport.setMatches(list);
+                sports.add(sport);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       // System.out.println(JSON.toJSONString(sports));
+        return sports;
     }
 }
