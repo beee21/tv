@@ -13,14 +13,33 @@
 <div class="container mt-3">
     <div style="display: flex;justify-content:space-between;">
         <button type="button" onclick="javascript:history.back();" class="btn btn-primary">返回</button>
-        <p id="name" style="font-size:18px; ">赛事直播</p>
+        <select class="form-select" id="sel1" style="width:100px">
+            <option value="">全部</option>
+            <option value="NBA">NBA</option>
+            <option value="CBA">CBA</option>
+            <option value="中超">中超</option>
+            <option value="英超">英超</option>
+            <option value="西甲">西甲</option>
+            <option value="德甲">德甲</option>
+            <option value="意甲">意甲</option>
+            <option value="法甲">法甲</option>
+            <option value="中甲">中甲</option>
+            <option value="欧冠">欧冠</option>
+        </select>
         <a href="index.html" class="btn btn-primary">首页</a>
     </div>
     <div class="list" style="margin-top:10px; font-size:18px;">
     </div>
 </div>
 <script>
-    var game=getTid();
+    show('');
+    $('#sel1').change(function(data){
+        var value = $("#sel1 option:selected").attr("value");
+        $(".list").empty();
+       show(encodeURIComponent(value));
+    });
+
+    function show(game){
     $.ajax({
         url: "/sport",
         data: {game: game},
@@ -30,7 +49,7 @@
          <!-- $("#name").text("共"+data.length+"个信号源");-->
             for (var i in data) {
                 var dateStr=data[i].dateStr;
-                $(".list").append('<p style="background-color: #e7f0f3;">'+dateStr+'</p>');
+                $(".list").append('<p style="background-color: #e7f0f3;text-align:center;">'+dateStr+'</p>');
                 $(".list").append('<div class="list-group">');
                 var matches=data[i].matches;
                 if(matches.length>0){
@@ -64,7 +83,7 @@
                        ' </a>');
                      }
                 }else{
-                     $(".list").append('<p class="list-group-item list-group-item-action">当天无比赛</p>');
+                     $(".list").append('<p class="list-group-item" style="text-align:center;">暂无数据</p>');
                 }
             $(".list").append('</div>');
 
@@ -72,6 +91,7 @@
 
         }
     });
+    }
 
     function getTid()
     {
@@ -85,6 +105,7 @@
            }
            return('');
     }
+
 
 
 
