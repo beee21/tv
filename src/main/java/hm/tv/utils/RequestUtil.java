@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class RequestUtil {
@@ -74,37 +76,46 @@ public class RequestUtil {
     }*/
 
     public static Item getPlayUrl(String attr) {
-        String url=domain + attr;
+        String url = domain + attr;
         Document document = document(url);
-        Item item=new Item();
+        Item item = new Item();
         Elements uls = document.select("ul");
         Element ul = uls.get(uls.size() - 1);
-        if(Objects.nonNull(ul)){
+        if (Objects.nonNull(ul)) {
             Elements lis = ul.select("li");
-            List<PlayItem> list=new ArrayList<>();
-            lis.stream().forEach(li -> {
-                if(li.hasText()&& li.childrenSize()>0){
+            List<PlayItem> list = new ArrayList<>();
+            boolean playing = false;
+            for (int i = lis.size() - 1; i >= 0; i--) {
+                Element li = lis.get(i);
+                if (li.hasText() && li.childrenSize() > 0) {
                     String text = li.text();
-                    if(Objects.nonNull(text) && text.contains(":")){
-                        PlayItem playItem=new PlayItem();
+                    if (Objects.nonNull(text) && text.contains(":")) {
+                        PlayItem playItem = new PlayItem();
                         text = text.trim();
-                        if(text.endsWith("回看")){
-                            text= text.substring(0,text.length()-2);
+                        if (text.endsWith("回看")) {
+                            text = text.substring(0, text.length() - 2);
                             playItem.setUrl("2");
-                          // text=text.replace("回看","(已结束)");
-                        }else if(text.endsWith("直播中")){
-                            //text=text.replace("直播中","(直播中)");
-                            text= text.substring(0,text.length()-3);
+                        } else if (text.endsWith("直播中")) {
+                            text = text.substring(0, text.length() - 3);
                             playItem.setUrl("1");
+                        } else {
+                            String s = text.split(" ")[0];
+                            LocalTime localTime = LocalTime.parse(s);
+                            if (localTime.isBefore(LocalTime.now())) {
+                                if (playing) {
+                                    playItem.setUrl("2");
+                                } else {
+                                    playItem.setUrl("1");
+                                    playing = true;
+                                }
+                            }
                         }
-                        System.out.println(text);
                         playItem.setName(text);
                         list.add(playItem);
                     }
                 }
-
-
-            });
+            }
+            Collections.reverse(list);
             item.setProgram(list);
         }
 
@@ -113,7 +124,7 @@ public class RequestUtil {
         String str = null, key = null;
 
         String attr1 = playURL.selectFirst("option").attr("value");
-        ClassPathResource resource=new ClassPathResource("playera.js");
+        ClassPathResource resource = new ClassPathResource("playera.js");
         InputStream inputStream = null;
         try {
             inputStream = resource.getInputStream();
