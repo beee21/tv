@@ -29,7 +29,7 @@
         <p id="name" style="font-size:12px;margin:auto"></p>
         <a href="index.html" class="btn btn-primary">首页</a>
     </div>
-    <video id="video" muted  preload="auto" playsinline controls>
+    <video id="video" muted  autoplay playsinline controls>
     </video>
     <div class="list-group" style="margin-top:10px; font-size:18px;"></div>
     <script>
@@ -69,17 +69,8 @@
                             return pair[1];
                        }
                }
-               return(false);
+               return('');
         }
-        function IsPC(){
-            var userAgentInfo = navigator.userAgent;
-            var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
-            var flag = true;
-            for (var v = 0; v < Agents.length; v++) {
-                if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }
-            }
-            return flag;
-       }
 
     </script>
 </div>

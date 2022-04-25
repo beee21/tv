@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 
 public class RequestUtil {
@@ -84,6 +86,7 @@ public class RequestUtil {
         if (Objects.nonNull(ul)) {
             Elements lis = ul.select("li");
             List<PlayItem> list = new ArrayList<>();
+            List<PlayItem> playList = new ArrayList<>();
             boolean playing = false;
             for (int i = lis.size() - 1; i >= 0; i--) {
                 Element li = lis.get(i);
@@ -101,7 +104,7 @@ public class RequestUtil {
                         } else {
                             String s = text.split(" ")[0];
                             LocalTime localTime = LocalTime.parse(s);
-                            if (localTime.isBefore(LocalTime.now())) {
+                            if (localTime.isBefore(LocalTime.now(ZoneId.of("UTC+8")))) {
                                 if (playing) {
                                     playItem.setUrl("2");
                                 } else {
@@ -111,11 +114,16 @@ public class RequestUtil {
                             }
                         }
                         playItem.setName(text);
-                        list.add(playItem);
+                        if ("2".equals(playItem.getUrl()))
+                            playList.add(playItem);
+                        else
+                            list.add(playItem);
                     }
                 }
             }
             Collections.reverse(list);
+            Collections.reverse(playList);
+            list.addAll(playList);
             item.setProgram(list);
         }
 
