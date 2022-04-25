@@ -4,11 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import hm.tv.beans.*;
-import hm.tv.repository.UserRepository;
-import hm.tv.utils.IPUtil;
 import hm.tv.utils.RequestUtil;
 import org.jsoup.Jsoup;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,16 +25,8 @@ public class IndexController {
         return RequestUtil.home(tid);
     }
 
-    @Autowired
-    private UserRepository userRepository;
-
     @GetMapping("play")
     public Item play(@RequestParam String attr, HttpServletResponse response, HttpServletRequest request) {
-        String agent = request.getHeader("User-Agent");
-        new Thread(() -> userRepository.save(new User().setUa(agent).setIp(IPUtil.getIpAddr(request)))).start();
-
-        System.out.println(agent);
-        System.out.println(attr);
         return RequestUtil.getPlayUrl(attr);
     }
 
