@@ -31,7 +31,7 @@
             for (var i in data) {
                 var name=data[i].name;
                 var url=data[i].url;
-                $(".list-group").append('<a href=play.html?name='+name+'&attr='+encodeURIComponent(url)+' class="list-group-item list-group-item-action">'+name+'</a>');
+                $(".list-group").append('<a href=play.html?name='+encodeURIComponent(name)+'&attr='+encodeURIComponent(url)+' class="list-group-item list-group-item-action">'+name+'</a>');
             }
 
         }

@@ -35,6 +35,7 @@
     <script>
         var name=decodeURIComponent(getUrl('name'));
         $("#name").text(name);
+         document.title = name;
         var attr=decodeURIComponent(getUrl('attr'));
         $.ajax({
             url: "/play",
@@ -89,7 +90,7 @@
                             return pair[1];
                        }
                }
-               return(false);
+               return('');
         }
         function IsPC(){
             var userAgentInfo = navigator.userAgent;
