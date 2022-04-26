@@ -12,8 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -31,10 +38,10 @@ public class IndexController {
     }
 
     @GetMapping("sport")
-    public List<Sport> sport(@RequestParam(required = false,defaultValue = "") String game) {
+    public List<Sport> sport(@RequestParam(required = false, defaultValue = "") String game) {
         List<Sport> sports = new ArrayList<>();
         try {
-            String text = Jsoup.connect("https://70zhibo.com/api/web/indexMatchList?game="+game).ignoreContentType(true).get().text();
+            String text = Jsoup.connect("https://70zhibo.com/api/web/indexMatchList?game=" + game).ignoreContentType(true).get().text();
             JSONArray array = JSON.parseArray(text);
             for (int i = 0; i < array.size(); i++) {
                 Sport sport = new Sport();
@@ -59,7 +66,23 @@ public class IndexController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-       // System.out.println(JSON.toJSONString(sports));
+        // System.out.println(JSON.toJSONString(sports));
         return sports;
+    }
+
+    private String download(String fileUrl) throws Exception {
+        String[] split = fileUrl.split("/");
+        String filePath = "home\\" + split[split.length - 1];
+        File file = new File(filePath);
+        if (!file.exists()) {
+            new FileOutputStream(filePath).getChannel()
+                    .transferFrom(Channels.newChannel(new URL(fileUrl).openStream()), 0, Long.MAX_VALUE);
+        }
+        if (file.exists()) {
+            byte[] b = Files.readAllBytes(Paths.get(filePath));
+            String base64 = Base64.getEncoder().encodeToString(b);
+            return base64;
+        }
+        return null;
     }
 }
