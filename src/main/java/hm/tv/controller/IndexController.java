@@ -12,16 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
+
 
 @RestController
 public class IndexController {
@@ -56,8 +49,10 @@ public class IndexController {
                     JSONArray lives = object.getJSONArray("lives");
                     if (lives.size() > 0) {
                         String link = lives.getJSONObject(0).getString("link");
-                        match.setLink(download(link));
+                        match.setLink(link);
                     }
+                    /*match.setGuestTeamLink(download(match.getGuestTeamLink()));
+                    match.setMasterTeamLink(download(match.getMasterTeamLink()));*/
                     list.add(match);
                 }
                 sport.setMatches(list);
@@ -70,13 +65,15 @@ public class IndexController {
         return sports;
     }
 
-    private String download(String fileUrl) throws Exception {
+    /*private String download(String fileUrl) throws Exception {
+        if(Objects.isNull(fileUrl))
+            return null;
         String[] split = fileUrl.split("/");
         String filePath = "home\\" + split[split.length - 1];
         File file = new File(filePath);
         if (!file.exists()) {
             new FileOutputStream(filePath).getChannel()
-                    .transferFrom(Channels.newChannel(new URL(fileUrl).openStream()), 0, Long.MAX_VALUE);
+                    .transferFrom(Channels.newChannel(new URL("https://70zhibo.com"+fileUrl).openStream()), 0, Long.MAX_VALUE);
         }
         if (file.exists()) {
             byte[] b = Files.readAllBytes(Paths.get(filePath));
@@ -84,5 +81,5 @@ public class IndexController {
             return base64;
         }
         return null;
-    }
+    }*/
 }
