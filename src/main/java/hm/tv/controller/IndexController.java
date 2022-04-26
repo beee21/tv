@@ -56,7 +56,7 @@ public class IndexController {
                     JSONArray lives = object.getJSONArray("lives");
                     if (lives.size() > 0) {
                         String link = lives.getJSONObject(0).getString("link");
-                        match.setLink(link);
+                        match.setLink(download(link));
                     }
                     list.add(match);
                 }
