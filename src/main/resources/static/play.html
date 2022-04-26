@@ -30,7 +30,7 @@
     </div>
     <video id="video" muted autoplay playsinline controls>
     </video>
-    <p style="text-align:center;" class="text-danger" id="playing"></p>
+    <p style="text-align:center;" class="text-danger" id="playing">声音已关闭，请手动开启</p>
     <div class="list-group" style="margin-top:10px; font-size:18px;"></div>
     <script>
         var name=decodeURIComponent(getUrl('name'));
@@ -59,8 +59,6 @@
                    {
                         css='text-danger';
                         text='直播中';
-                        var ss=name.split(' ');
-                        $("#playing").text('正在播放：'+ss[1]);
                    }else if(status=='2') //结束
                    {
                         css='text-success';
