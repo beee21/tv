@@ -170,7 +170,7 @@ public class RequestUtil {
                         }
                         break;
                     } else {
-                        if (data.contains("=")) {
+                        if (data.contains("=")&& !data.contains("window")) {
                             engine.eval(data);
                         }
                     }
