@@ -41,34 +41,37 @@
              $.ajax({
                 url: "/link/"+id,
                 type: "GET",
-                dataType: "json",
+                dataType: "text",
                 success: function(data) {
                     url=data;
+                    play();
                 }
             });
+        }else{
+            play();
         }
-        var video = document.getElementById('video');
-
-       if (Hls.isSupported()) {
-            var video = document.getElementById('video');
-            var hls = new Hls();
-            hls.loadSource(url);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play();
-            });
+        function play(){
+           var video = document.getElementById('video');
+           if (Hls.isSupported()) {
+                var video = document.getElementById('video');
+                var hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                });
+            }
+            else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.addEventListener('canplay', function() {
+                    video.play();
+                });
+            }
+            // 兼容微信(微信可以自动播放)
+              document.addEventListener("WeixinJSBridgeReady", function () {
+                 video.play()
+            }, false);
         }
-        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = url;
-            video.addEventListener('canplay', function() {
-                video.play();
-            });
-        }
-
-        // 兼容微信(微信可以自动播放)
-          document.addEventListener("WeixinJSBridgeReady", function () {
-             video.play()
-        }, false);
 
         function getUrl(param)
         {
