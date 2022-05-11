@@ -7,6 +7,7 @@ import hm.tv.beans.*;
 import hm.tv.utils.RequestUtil;
 import org.jsoup.Jsoup;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,6 +64,21 @@ public class IndexController {
         }
         // System.out.println(JSON.toJSONString(sports));
         return sports;
+    }
+
+    @GetMapping("/link/{id}")
+    public String link(@PathVariable String id) {
+        try {
+            String text = Jsoup.connect("http://70zhibo.com/api/web/match/" + id).ignoreContentType(true).get().text();
+            JSONObject object = JSON.parseObject(text);
+            JSONArray lives = object.getJSONArray("lives");
+            if (lives.size() > 0) {
+                return lives.getJSONObject(0).getString("link");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /*private String download(String fileUrl) throws Exception {

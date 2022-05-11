@@ -13,4 +13,5 @@ public class Match {
     private String guestTeamLink;
     private String masterTeamName;
     private String masterTeamLink;
+    private Integer id;
 }

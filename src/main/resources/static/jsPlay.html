@@ -36,6 +36,17 @@
         var name=decodeURIComponent(getUrl('name'));
         $("#name").text(name);
         var url=decodeURIComponent(getUrl('url'));
+        if(url=='null'){
+            var id=getUrl('id');
+             $.ajax({
+                url: "/link/"+id,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    url=data;
+                }
+            });
+        }
         var video = document.getElementById('video');
 
        if (Hls.isSupported()) {
