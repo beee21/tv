@@ -198,4 +198,8 @@ public class RequestUtil {
         }
         return null;
     }
+
+    public static void main(String[] args) {
+        getPlayUrl("?act=play&token=e7e2be69c8aec6dcba34af21afacc929&tid=gt&id=1");
+    }
 }

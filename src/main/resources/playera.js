@@ -66,7 +66,6 @@ function return_break() {
 function setPlayerUri(uri) {
 	m3u8Uri = uri;
 	return m3u8Uri;
-	//full_player();
 }
 
 function full_player() {
@@ -98,9 +97,10 @@ function startPlayer(uri) {
 	uri = uri.split("").reverse().join("");
   	uri = bdecodeb(uri,hken);
 	uri = uri.replace("token=123", "token="+token);
+	uri = uri.replace("token="+hkens, "token="+token);
 	uri = uri.replace(hken, "");
 	m3u8Uri = "";
 	if (!is_null(uri)) {
-		return	urlParsing(uri);
+		return urlParsing(uri);
 	}
 }
