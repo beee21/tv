@@ -117,4 +117,15 @@ public class IndexController {
         }
         return null;
     }*/
+
+    @GetMapping("/save")
+    public String save(String url) {
+        this.url=url;
+        return  this.url;
+    }
+    @GetMapping("/get")
+    public String get() {
+        return url;
+    }
+    public static String url;
 }
