@@ -2,11 +2,9 @@ package hm.tv.utils;
 
 import hm.tv.beans.Item;
 import hm.tv.beans.PlayItem;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.springframework.core.io.ClassPathResource;
 
@@ -17,8 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.*;
