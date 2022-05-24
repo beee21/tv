@@ -68,18 +68,6 @@ function setPlayerUri(uri) {
 	return m3u8Uri;
 }
 
-function full_player() {
-	if (!is_null(m3u8Uri)) {
-		if (is_vst) {
-			vstPlayer.src = "";
-			vst.open_player(m3u8Uri);
-		} else {
-			vstPlayer.src = m3u8Uri;
-			vstPlayer.play();
-		}
-	}
-}
-
 function urlParsing(uri) {
 	if (!is_null(uri) && uri.indexOf("://") > 0) {
 		var vid = uri.substr(uri.indexOf("://") + 3);
