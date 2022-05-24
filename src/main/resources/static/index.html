@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
 <div class="container mt-3">
@@ -22,12 +23,37 @@
          <a href="http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8" class="list-group-item list-group-item-action">湖南卫视</a>
          <a href="https://nhkwlive-ojp.webcdn.stream.ne.jp/hls/live/2003459/nhkwlive-ojp/index_1M.m3u8" class="list-group-item list-group-item-action">NHK World</a>
          <a href="https://cdn3.wowza.com/5/Nkp4c1FTRTZFTHBY/liveCNTV/ngrp:cntv_all/playlist.m3u8" class="list-group-item list-group-item-action">加拿大国家电视台</a>-->
+
+        <div style="display: flex;justify-content:space-between;">
+            <input type="text" data-pure-clear-button name="keyWord" class="col" style="height:40px" id="keyWord"
+                   placeholder="电视搜索内容或播放的链接">
+            <button id="search" class="btn btn-primary col-auto" onclick="save()">保存</button>
+
+        </div>
+
     </div>
     <p class="fixed-bottom"
        style="margin-top:50px;  text-align:center;background-color: #000;color:#ffffff ">
         此网址仅用于学习测试，资源来源于互联网搜索
     </p>
+    <script>
+    function save() {
+     var text=document.getElementById("keyWord").value;
+        if (text == null || text == '')
+            return;
 
+        $.ajax({
+            url: "save?url=" + text,
+            success: function(result) {
+                console.log(result);
+                if (result.code == 200) {
+                }
+
+            }
+        });
+    };
+
+    </script>
 </div>
 </body>
 </html>
