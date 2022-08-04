@@ -1,0 +1,7 @@
+autocreate: true
+name: tv
+image: okteto/maven:3
+command: ["mvn", "spring-boot:run" ]
+workdir: /app
+forward:
+  - 8080:8080
